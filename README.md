@@ -1,6 +1,6 @@
 ![SANI POSE](https://user-images.githubusercontent.com/62282673/188310320-60babd24-59bd-4781-8a60-e85ca1e2af34.png)
 
-#**Project Title : SANI (Semantic Assistance with Neural Intelligence)**
+# **Project Title : SANI (Semantic Assistance with Neural Intelligence)**
 
 Problem Statement :
 
