@@ -1,0 +1,500 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>{{title}}</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Electrolize&family=Roboto&family=Sora&family=Ubuntu&display=swap');
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'Electrolize', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #1f2833;
+            height: 100vh;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        #boxCloud {
+            position: fixed;
+            height: 450px;
+            width: 450px;
+            background-color: #66f3f1;
+            border-radius: 50%;
+            box-shadow: 0 0 30px 30px #66f3f1;
+            top: -200px;
+            left: -250px;
+            transition: all 200ms cubic-bezier(0.390, 0.5, 0.150, 3.36);
+        }
+
+        .container {
+            position: absolute;
+            width: 100%;
+            min-height: 100%;
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(200px);
+            border-radius: 20px;
+        }
+
+        .header {
+            position: sticky;
+            top: 0px;
+            width: 100%;
+            height: auto;
+            padding: 30px 100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            border-radius: 40px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-bottom: 2px solid white;
+            transform: rotate(-5deg);
+            backdrop-filter: blur(100px);
+        }
+
+        .header .logo img {
+            font-size: 2rem;
+            width: 250px;
+            height: auto;
+            margin-top: -100px;
+            transform: rotate(5deg);
+        }
+
+        .header ul {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-direction: row;
+            width: 600px;
+            list-style: none;
+            margin-top: 0px;
+            transform: rotate(5deg);
+        }
+
+        ul li a {
+            color: yellow;
+            text-decoration: none;
+            text-align: center;
+            transition: .3s;
+            cursor: pointer;
+            font-size: 1.2rem;
+            border-bottom: 2px solid;
+            border-bottom-color: #66f3f1;
+            margin: 0 10px 0 10px;
+            padding: 10px 30px;
+        }
+
+        ul li a:hover {
+            color: black;
+            border-radius: 0 0 20px 20px;
+            background: linear-gradient(rgba(255, 255, 255, 0.1), transparent);
+        }
+
+        .login a {
+            background-color: #66f3f1;
+            font-size: 1.3rem;
+            border-bottom: 5px solid;
+            border-bottom-color: #66f3f1;
+            margin: 0 10px 0 10px;
+            padding: 10px 30px;
+            cursor: pointer;
+        }
+
+        div.moto {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            color: white;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .moto h3 {
+            color: white;
+            margin-top: 500px;
+            margin-left: -800px;
+            letter-spacing: 5px;
+        }
+
+        h3 img {
+            position: fixed;
+            z-index: -1;
+            opacity: .8;
+            width: 700px;
+            margin-top: -200px;
+            margin-left: 200px;
+        }
+
+        .moto .chat {
+            margin-left: -500px;
+            font-size: 1.5rem;
+            position: relative;
+            margin-top: 100px;
+            border: none;
+            box-shadow: 0 0 0 0 white;
+            background-color: white;
+            cursor: pointer;
+            -webkit-animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);
+            -moz-animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);
+            -ms-animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);
+            animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);
+        }
+
+        @-webkit-keyframes pulse {
+            to {
+                box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);
+            }
+        }
+
+        @-moz-keyframes pulse {
+            to {
+                box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);
+            }
+        }
+
+        @-ms-keyframes pulse {
+            to {
+                box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);
+            }
+        }
+
+        @keyframes pulse {
+            to {
+                box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);
+            }
+        }
+
+        .chat a {
+            text-decoration: none;
+            color: #1b1b1b;
+            background-color: #66f3f1;
+            padding: 20px 40px;
+            transition: .4s;
+        }
+
+        .chat a:hover {
+            padding: 20px 100px 20px 100px;
+            letter-spacing: 10px;
+        }
+
+        div.faq {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            margin-top: 120px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            flex-direction: column;
+            font-size: 5rem;
+            color: white;
+        }
+
+        div.about {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            margin-top: 450px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 5rem;
+            color: white;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-direction: row;
+
+        }
+
+        .about .card {
+            height: 250px;
+            width: 300px;
+            background: linear-gradient(transparent, rgba(255, 255, 255, 0.1));
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .card img {
+            width: 200px;
+            border: 2px solid white;
+            border-radius: 100%;
+            margin-top: -100px;
+        }
+
+        .card p {
+            font-size: 1.5rem;
+            color: white;
+            margin: 30px 0 20px 0;
+        }
+
+
+        .card p:nth-child(3) {
+            color: yellow;
+            font-size: 1.3rem;
+            margin: 20px 0 20px 0;
+        }
+
+        div.footer {
+            position: relative;
+            height: auto;
+            width: 100%;
+            margin-top: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1rem;
+            background-color: #66f3f1;
+            color: #1b1b1b;
+            padding: 10px;
+        }
+
+        div.content {
+            font-size: 1rem;
+            position: relative;
+            height: auto;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-direction: column;
+            margin-top: 200px;
+        }
+
+        .content .question {
+            color: yellow;
+            font-size: 1.7rem;
+            margin-left: -600px;
+            margin: 100px 0 10px 0;
+        }
+
+        .content .answer {
+            color: white;
+            font-size: 1.3rem;
+            margin-left: -600px;
+            margin: 10px 0 10px 0;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .accordion {
+            background: linear-gradient(to right, rgba(255, 255, 255, 0.1), transparent);
+            color: white;
+            cursor: pointer;
+            padding: 18px;
+            width: 80%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 1.6rem;
+            transition: 0.4s;
+            border-bottom: 2px solid transparent;
+        }
+
+        .active,
+        .accordion:hover {
+            border-bottom: 2px solid #66f3f1;
+        }
+
+        .accordion:after {
+            content: '\002B';
+            color: white;
+            font-weight: bold;
+            float: right;
+            margin-left: 5px;
+        }
+
+        .active:after {
+            content: "\2212";
+        }
+
+        .panel {
+            padding: 0 18px;
+            background-color: transparent;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+            font-size: 1.5rem;
+            width: 80%;
+        }
+    </style>
+</head>
+
+<body id="body">
+
+    <DIV id="boxCloud"></DIV>
+
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <img src="{% static 'logo.png' %}" alt="dkfjjdkfnb">
+            </div>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="/analysis">Introspect</a></li>
+                <!-- <li class="login"><a href="login"> Login</a></li> -->
+                
+            </ul>
+        </header>
+
+        <div class="moto" id="home">
+
+            <!-- {% for user in users %}
+            <h1>{{user.name}}</h1>
+            {% endfor %} -->
+
+            <h3>"Talk it out!!!"
+                <img src="{% static 'bot_bg.svg' %}" alt="sajdb" width="400">
+            </h3>
+            <div class="chat">
+                <a href="chat">Let's Chat</a>
+            </div>
+            <div class="content">
+                <p class="question">What is SANI?</p>
+                <p class="answer">SANI stands for Semantic Assistance with Neural Intelligence</p>
+                <p class="answer">SANI is a conversatioanl A.I , type of advanced form of generative chatbot to which
+                    users can openly talk about any topics.</p>
+
+                <p class="question">Why to use SANI?</p>
+                <p class="answer">SANI can easily engage with people on a level that feels personal and even empathetic
+                    – like talking to a helpful assistant</p>
+                <p class="answer">SANI can answer questions and help people to solve their problems.</p>
+                <p class="answer">SANI communicate with people using instant messaging online and is integrated into
+                    website</p>
+            </div>
+        </div>
+
+        <div class="about" id="about">
+            <div class="card">
+                <img src="{% static 'harshil.jpg' %}" alt="dkfjjdkfnb">
+                <p>Harshil Patadia</p>
+                <p>Back end Dev</p>
+            </div>
+            <div class="card">
+                <img src="{% static 'suhani12.jpeg' %}" alt="">
+                <p>Suhani Patel</p>
+                <p>Graphic Designer</p>
+            </div>
+            <div class="card">
+                <img src="{% static 'samay.jpg' %}" alt="dkfjjdkfnb">
+                <p>Samay Dumasia</p>
+                <p>Artificial Intelligence</p>
+            </div>
+            <div class="card">
+                <img src="{% static 'krishn.jpeg' %}" alt="dkfjjdkfnb">
+                <p>Krishn Panchal</p>
+                <p>Front end Dev</p>
+            </div>
+        </div>
+
+        <div class="faq" id="faq">
+            <button class="accordion">Who will be the users?</button>
+            <div class="panel">
+                <p>The users can be anyone i.e., who wants to express their feelings or just for entertainment .</p>
+            </div>
+
+            <button class="accordion">Is SANI completely free?</button>
+            <div class="panel">
+                <p>Yes, SANI is completely free as we need to spread more awarness of mental health among people .</p>
+            </div>
+
+            <button class="accordion">What kind of questions should the SANI be able to answer?</button>
+            <div class="panel">
+                <p>SANI can answer every question if it's appropiate ,either the answer will be sensible or it will be humorous.</p>
+            </div>
+            
+            <button class="accordion">How SANI differs from other bots?</button>
+            <div class="panel">
+                <p>SANI can talk about anything unlike other programs which can only give response about specific niche. Also SANI can analyse the personality of the user through just having conversations.</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            @copyrights 2022 reserved
+        </div>
+
+    </div>
+
+    <script>
+        document.getElementById("body").onmousemove = function (e) {
+            var x = e.clientX
+            var y = e.clientY
+
+            document.getElementById("boxCloud").style.marginLeft = x + "px"
+            document.getElementById("boxCloud").style.marginTop = y + "px"
+        }
+
+        function dropDown(e) {
+            let dropdownContent = e.nextElementSibling;
+            if (e.classList.contains("active-dropdown")) {
+                dropdownContent.style.maxHeight = 0;
+                e.classList.remove("active-dropdown");
+            } else {
+                dropdownContent.style.maxHeight = dropdownContent.scrollHeight + "px";
+                e.classList.add("active-dropdown");
+            }
+        }
+
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+            });
+        }
+    </script>
+
+    <!-- <form action="counter" method="post">
+        {% csrf_token %}
+        <textarea name="" id="" cols="30" rows="10"></textarea>
+        <button type="submit">Submit</button>
+    </form> -->
+</body>
+
+</html>

@@ -1,0 +1,417 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <title>{{title}}</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Electrolize&family=Roboto&family=Sora&family=Ubuntu&display=swap');
+
+        :root {
+            --body-bg: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --msger-bg: #fff;
+            --border: 2px solid #ddd;
+            --left-msg-bg: #ececec;
+            --right-msg-bg: #579ffb;
+        }
+
+        html {
+            box-sizing: border-box;
+        }
+
+        *,
+        *:before,
+        *:after {
+            margin: 0;
+            padding: 0;
+            box-sizing: inherit;
+
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #1f2833;
+            font-family: 'Electrolize', sans-serif;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            min-height: 100%;
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(200px);
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container video {
+            position: absolute;
+            width: 1450px;
+            transform: rotateY(180deg);
+            margin-left: -360px;
+        }
+
+        .container h1 {
+            font-size: 3rem;
+            margin-left: 200px;
+        }
+
+        .msger {
+            display: flex;
+            flex-flow: column wrap;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 567px;
+            margin: 25px 10px;
+            height: calc(100% - 50px);
+            border-radius: 5px;
+            background: transparent;
+            /* box-shadow: 0 15px 15px -5px rgba(0, 0, 0, 0.2); */
+            box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            backdrop-filter: blur(500px);
+            padding: 20px;
+        }
+
+        .msger-chat {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .msger-chat::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .msger-chat::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .msger-chat::-webkit-scrollbar-thumb {
+            background: transparent;
+        }
+
+        .msg {
+            display: flex;
+            align-items: flex-end;
+            margin-bottom: 10px;
+        }
+
+        .msg:last-of-type {
+            margin: 0;
+        }
+
+        .msg-img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            border-radius: 50%;
+            background-image: url("{% static 'logo.png' %}");
+            border: 1px solid white;
+        }
+
+        .msg-bubble {
+            max-width: 450px;
+            padding: 15px;
+            border-radius: 15px;
+            background: var(--left-msg-bg);
+        }
+
+        .msg-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .msg-info-name {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .msg-info-time {
+            font-size: 0.85em;
+        }
+
+        .left-msg .msg-bubble {
+            border-bottom-left-radius: 0;
+        }
+
+        .right-msg {
+            flex-direction: row-reverse;
+            word-wrap: break-word;
+        }
+
+        .right-msg .msg-bubble {
+            background: var(--right-msg-bg);
+            color: #fff;
+            border-bottom-right-radius: 0;
+
+        }
+
+        .right-msg .msg-img {
+            margin: 0 0 0 10px;
+        }
+
+        .msger-inputarea {
+            display: flex;
+            padding: 10px;
+        }
+
+        .msger-inputarea * {
+            padding: 10px;
+            border: none;
+            border-radius: 3px;
+            font-size: 1em;
+        }
+
+        .msger-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            color: white;
+        }
+
+        .msger-input::placeholder {
+            color: white;
+        }
+
+        .msger-send-btn {
+            margin-left: 10px;
+            background: rgb(0, 196, 65);
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.23s;
+        }
+
+        .msger-send-btn:hover {
+            background: rgb(0, 180, 50);
+        }
+
+        .msger-chat {
+            background-color: transparent;
+        }
+    </style>
+</head>
+
+<body id="body">
+
+    <DIV id="boxCloud"></DIV>
+    <div class="container">
+
+        <video autoplay>
+            <source src="{% static 'bot2.mp4' %}" type="video/mp4" autoplay>
+        </video>
+        <section class="msger">
+
+            <main class="msger-chat" id="display">
+
+            </main>
+
+            <form class="msger-inputarea" id="post-form" method="post">
+                {% csrf_token %}
+
+                <input type="hidden" name="username" id="username" value="krishn" />
+                <input type="hidden" name="user_id" id="user_id" value="1" />
+                <input type="text" class="msger-input" id="message" autocomplete="off"
+                    placeholder="Enter your message or Speak something...">
+            </form>
+            
+        </section>
+    </div>
+
+    <script type="text/javascript">
+        // for voice 
+
+        var speech = true;
+        window.SpeechRecognition = window.SpeechRecognition
+            || window.webkitSpeechRecognition;
+
+        const recognition = new SpeechRecognition();
+        recognition.interimResults = true;
+
+        recognition.addEventListener('result', e => {
+            const transcript = Array.from(e.results)
+                .map(result => result[0])
+                .map(result => result.transcript)
+                .join('')
+
+            document.getElementById("message").focus()
+            document.getElementById("message").value = transcript;
+            console.log(transcript);
+        });
+
+        if (speech == true) {
+            recognition.start();
+            recognition.addEventListener('end', recognition.start);
+        }
+
+        // get messages
+
+        const msgerChat = document.getElementById("#display");
+
+        $(document).ready(function () {
+
+            setInterval(function () {
+                $.ajax({
+                    type: 'GET',
+                    url: "/getMessages",
+                    success: function (response) {
+
+                        // console.log(response);
+                        $("#display").empty();
+                        for (var key in response.messages) {
+                            let text = response.messages[key].text
+
+                            let msgHTML = '';
+
+                            let date = new Date(response.messages[key].date)
+                            date = date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear()+" ("+date.getSeconds()+":"+date.getMinutes()+":"+date.getHours()+")"
+
+                            let side = response.messages[key].username
+                            console.log(side);
+
+                            if (side === 'bot') {
+                                side = 'left'
+                            }
+                            else {
+                                side = "right"
+                            }
+
+                            msgHTML = `
+                                <div class="msg ${side}-msg">
+
+                                    <div class="msg-bubble">
+                                        <div class="msg-info">
+                                        <div class="msg-info-name">${name}</div>
+                                        <div class="msg-info-time">${date}</div>
+                                        </div>
+
+                                        <div class="msg-text">${text}</div>
+                                    </div>
+                                </div>
+                            `;
+                            // msgerChat.scrollTop += 500;
+                            $("#display").append(msgHTML);
+                        }
+                    },
+                    error: function (response) {
+                        alert('An error occured')
+                    }
+                });
+            }, 1000);
+        })
+        //post a message
+
+        // $(document).on('submit','#post-form',function(e){
+        //     e.preventDefault();
+
+        //     $.ajax({
+        //         type:'POST',
+        //         url:'/send',
+        //         data:{
+        //             username:$('#username').val(),
+        //             user_id:$('#user_id').val(),
+        //             message:$('#message').val(),
+        //             csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+        //         },
+        //         success: function(data){
+        //             //alert(data)
+        //         }
+        //     });
+        //     document.getElementById('message').value = ''
+        // });
+
+        // $(document).ready(function () {
+
+        //      $("#Save").click(function (e) {
+        //         e.preventDefault()
+
+        //          var person = new Object();
+        //          person.name = $('#name').val();
+        //          console.log(person.name);
+        //         //  $.ajax({
+        //         //      url: 'http://127.0.0.1:8000/postdata',
+        //         //      type: 'POST',
+        //         //      dataType:'json',
+        //         //      data: { 
+        //         //         person,
+        //         //         csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+        //         //      },
+        //         //      success: function (data, textStatus, xhr) {
+        //         //          console.log(data);
+        //         //      },
+        //         //      error: function (xhr, textStatus, errorThrown) {
+        //         //          console.log('Error in Operation');
+        //         //      }
+        //         //  });
+
+        //          $.ajaxSetup({
+        //             beforeSend: function(xhr, settings) {
+        //                 if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+        //                     xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        //                     console.log(csrftoken);
+        //                 }
+        //             }
+        //         });
+
+        //         $.ajax({
+        //             type: 'POST',
+        //             url: '/postdata/',
+        //             dataType: 'json',
+        //             data: { 
+        //                 person,
+        //                 csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+        //             },
+        //             success: function (data, textStatus, xhr) {
+        //                 console.log(data);
+        //             },
+        //             error: function (xhr, textStatus, errorThrown) {
+        //                 console.log('Error in Operation');
+        //             }
+        //         });
+        //      });
+
+        //  });
+
+        let form = document.getElementById('post-form'); // selecting the form
+
+        form.addEventListener('submit', function (event) { // 1
+            console.log("hi");
+            event.preventDefault()
+
+            let data = new FormData(); // 2
+
+            data.append("username", document.getElementById('username').value)
+            data.append("user_id", document.getElementById('user_id').value)
+            data.append("message", document.getElementById('message').value)
+            data.append("csrfmiddlewaretoken", '{{csrf_token}}') // 3
+
+            axios.post('http://127.0.0.1:8000/send', data) // 4
+                .then(res => console.log(res)) // 5
+                .catch(errors => console.log(errors)) // 6
+
+            document.getElementById('message').value = ""
+
+        })
+
+    </script>
+</body>
+
+</html>

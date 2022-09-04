@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Electrolize&family=Roboto&family=Sora&family=Ubuntu&display=swap');
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'Electrolize', sans-serif;
+        }
+
+        body {
+            background: #1f2833;
+            height: 100vh;
+            width: 100%;
+        }
+
+        #boxCloud {
+            position: fixed;
+            height: 450px;
+            width: 450px;
+            background-color: #66f3f1;
+            border-radius: 50%;
+            box-shadow: 0 0 30px 30px #66f3f1;
+            top: -200px;
+            left: -250px;
+            transition: all 200ms cubic-bezier(0.390, 0.5, 0.150, 3.36);
+        }
+
+        .login--container {
+            width: 100%;
+            min-height: 100%;
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(200px);
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login--container .box {
+
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(200px);
+            width: 400px;
+            min-height: 350px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-direction: column;
+            padding: 50px 20px 50px 20px;
+            border-radius: 10px;
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+        }
+
+        input {
+            width:300px;
+            font-size: 1.2rem;
+            padding: 15px;
+            margin: 20px 0 20px 0;
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(200px);
+            border-radius: 100px;
+            border: 1px solid white;
+            color: white;
+        }
+
+        input::placeholder {
+            color: white;
+        }
+
+        .loginBtn {
+            margin-top: 20px;
+            background-color: lawngreen;
+            color: #252A34;
+            transition: .3s ease-in-out;
+            padding: 10px;
+            width: 150px;
+            cursor: pointer;
+            border: 2px solid lawngreen;
+            font-size: 1.4rem;
+            margin-bottom: 30px;
+        }
+
+        .loginBtn:hover {
+            letter-spacing: 5px;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+    </style>
+</head>
+
+<body id="body">
+    <DIV id="boxCloud"></DIV>
+
+    <div class='login--container'>
+        <form class='box' method="post">
+
+            {% for message in messages %}
+                <h5>{{message}}</h5>
+            {% endfor %}
+
+            {% csrf_token %}
+
+            <input placeholder="Username" type='name' id="name" name="name"/>
+            <input placeholder="Email" type='email' id="email" name="email"/>
+            <input type="password" placeholder="Password" id="pass" name="password"/>
+
+            <button type='submit' class='loginBtn'>
+                SIGN UP
+            </button>
+
+            <a href="login">
+                <p>Already have an account?</p>
+            </a>
+
+        </form>
+    </div>
+    <script >
+
+        document.getElementById("body").onmousemove = function(e) {
+            var x = e.clientX
+            var y = e.clientY
+
+            document.getElementById("boxCloud").style.marginLeft = x+"px"
+            document.getElementById("boxCloud").style.marginTop = y+"px"
+        }
+
+    </script>
+</body>
+
+</html>
