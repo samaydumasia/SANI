@@ -2,7 +2,7 @@
 
 # **Project Title : SANI (Semantic Assistance with Neural Intelligence)**
 
-Problem Statement :
+## Problem Statement :
 
 - A person hesitates to share their feelings and emotions because of a communication breakdown.
 
@@ -14,7 +14,7 @@ Problem Statement :
 
 -  In many cases, the person attempts suicide to end the suffering..
 
-Our Approach : 
+## Our Approach : 
 
 -  In our program, any person can express their feelings through various modes of communication like voice and text.
 
@@ -26,7 +26,7 @@ Our Approach :
 
 
 ## Video Presentation
-- https://youtu.be/rpmBkdSwdXY
+![youtube_video](https://youtu.be/rpmBkdSwdXY)
 
 
 
