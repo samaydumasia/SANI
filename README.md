@@ -60,7 +60,6 @@ MODULES :
 - SKLEARN
 ## Authors
 
-- Suhani Patel
 - Samay Dumasia
 - Krishn Panchal
 - Harshil Patadia
